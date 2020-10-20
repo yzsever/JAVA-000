@@ -6,8 +6,8 @@
 
 
 ```
-[mtagent@node02 ~]$ sudo jmap -heap 879
-Attaching to process ID 879, please wait...
+$ sudo jmap -heap 772
+Attaching to process ID 772, please wait...
 Debugger attached successfully.
 Server compiler detected.
 JVM version is 24.65-b04
@@ -31,32 +31,33 @@ Heap Configuration:
 Heap Usage:
 PS Young Generation
 Eden Space:
-   capacity = 20971520 (20.0MB)
-   used     = 18755232 (17.886383056640625MB)
-   free     = 2216288 (2.113616943359375MB)
-   89.43191528320312% used
+   capacity = 31457280 (30.0MB)
+   used     = 17620760 (16.804466247558594MB)
+   free     = 13836520 (13.195533752441406MB)
+   56.01488749186198% used
 From Space:
-   capacity = 2097152 (2.0MB)
-   used     = 966672 (0.9218902587890625MB)
-   free     = 1130480 (1.0781097412109375MB)
-   46.094512939453125% used
+   capacity = 5767168 (5.5MB)
+   used     = 850616 (0.8112106323242188MB)
+   free     = 4916552 (4.688789367675781MB)
+   14.749284224076705% used
 To Space:
-   capacity = 2097152 (2.0MB)
+   capacity = 5242880 (5.0MB)
    used     = 0 (0.0MB)
-   free     = 2097152 (2.0MB)
+   free     = 5242880 (5.0MB)
    0.0% used
 PS Old Generation
-   capacity = 52428800 (50.0MB)
-   used     = 36077800 (34.406471252441406MB)
-   free     = 16351000 (15.593528747558594MB)
-   68.81294250488281% used
+   capacity = 65536000 (62.5MB)
+   used     = 37929736 (36.17261505126953MB)
+   free     = 27606264 (26.32738494873047MB)
+   57.87618408203125% used
 PS Perm Generation
-   capacity = 42991616 (41.0MB)
-   used     = 42802056 (40.81922149658203MB)
-   free     = 189560 (0.18077850341796875MB)
-   99.55907682093178% used
+   capacity = 92798976 (88.5MB)
+   used     = 51436832 (49.053985595703125MB)
+   free     = 41362144 (39.446014404296875MB)
+   55.42823231152895% used
 
-15744 interned Strings occupying 1395280 bytes.
+19473 interned Strings occupying 2108632 bytes.
+
 ```
 
 
