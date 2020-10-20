@@ -1,68 +1,97 @@
 课后作业4：检查一下自己维护的业务系统的JVM参数配置,用jstat和jstack、jmap查看一下详情,并且自己独立分析一下大概情况,思考有没有不合理的地方,如何改进
 
 
+### 业务系统的JVM参数
+-Xms=32M -Xmx=256M 
 
-
-
+### 使用jmap分析
 
 ```
 $ sudo jmap -heap 772
 Attaching to process ID 772, please wait...
 Debugger attached successfully.
 Server compiler detected.
-JVM version is 24.65-b04
+JVM version is 24.65-b04                   // JVM版本
 
 using thread-local object allocation.
-Parallel GC with 2 thread(s)
+Parallel GC with 2 thread(s)               // 并行GC
 
 Heap Configuration:
-   MinHeapFreeRatio = 0
-   MaxHeapFreeRatio = 100
-   MaxHeapSize      = 268435456 (256.0MB)
-   NewSize          = 1310720 (1.25MB)
-   MaxNewSize       = 17592186044415 MB
-   OldSize          = 5439488 (5.1875MB)
-   NewRatio         = 2
-   SurvivorRatio    = 8
-   PermSize         = 21757952 (20.75MB)
-   MaxPermSize      = 174063616 (166.0MB)
-   G1HeapRegionSize = 0 (0.0MB)
+   MinHeapFreeRatio = 0                    // heap在使用率小于0的情况下, heap进行收缩, Xmx==Xms的情况下无效
+   MaxHeapFreeRatio = 100                  // heap在使用率大于100的情况下, heap进行扩张, Xmx==Xms的情况下无效
+   MaxHeapSize      = 268435456 (256.0MB)  // 堆的最大值
+   NewSize          = 1310720 (1.25MB)     // Young Generation的最小值/初始值
+   MaxNewSize       = 17592186044415 MB    // Young Generation的最大值
+   OldSize          = 5439488 (5.1875MB)   // Old Generation的最小值/初始值
+   NewRatio         = 2                    // Old Generation 与 Young Generation 的比例
+   SurvivorRatio    = 8                    // Young Generation中Eden Space与一个Survivor的比例 8:1:1
+   PermSize         = 21757952 (20.75MB)   // Perm Generation的最小值
+   MaxPermSize      = 174063616 (166.0MB)  // Perm Generation的最大值
+   G1HeapRegionSize = 0 (0.0MB)            // 不使用G1 GC
 
 Heap Usage:
 PS Young Generation
 Eden Space:
-   capacity = 31457280 (30.0MB)
-   used     = 17620760 (16.804466247558594MB)
-   free     = 13836520 (13.195533752441406MB)
-   56.01488749186198% used
+   capacity = 31457280 (30.0MB)               // Eden区容量30.0M
+   used     = 17620760 (16.804466247558594MB) // Eden区已使用容量16.8MB
+   free     = 13836520 (13.195533752441406MB) // Eden区空闲容量12.19MB
+   56.01488749186198% used                    // Eden区使用率56%
 From Space:
-   capacity = 5767168 (5.5MB)
-   used     = 850616 (0.8112106323242188MB)
-   free     = 4916552 (4.688789367675781MB)
-   14.749284224076705% used
+   capacity = 5767168 (5.5MB)                 // From区容量5.5MB
+   used     = 850616 (0.8112106323242188MB)   // From区已使用容量0.8MB
+   free     = 4916552 (4.688789367675781MB)   // From区空闲容量4.69MB
+   14.749284224076705% used                   // From区使用率14.7%
 To Space:
-   capacity = 5242880 (5.0MB)
-   used     = 0 (0.0MB)
-   free     = 5242880 (5.0MB)
-   0.0% used
+   capacity = 5242880 (5.0MB)                 // To区容量5.0MB
+   used     = 0 (0.0MB)                       // To区已使用容量0MB
+   free     = 5242880 (5.0MB)                 // To区空闲容量5.0MB
+   0.0% used                                  // To区使用率0%
 PS Old Generation
-   capacity = 65536000 (62.5MB)
-   used     = 37929736 (36.17261505126953MB)
-   free     = 27606264 (26.32738494873047MB)
-   57.87618408203125% used
+   capacity = 65536000 (62.5MB)               // Old区容量62.5MB
+   used     = 37929736 (36.17261505126953MB)  // Old区容量已使用容量36.2MB
+   free     = 27606264 (26.32738494873047MB)  // Old区容量空闲容量26.33MB
+   57.87618408203125% used                    // Old区容量使用率57.88%
 PS Perm Generation
-   capacity = 92798976 (88.5MB)
-   used     = 51436832 (49.053985595703125MB)
-   free     = 41362144 (39.446014404296875MB)
-   55.42823231152895% used
+   capacity = 92798976 (88.5MB)               // Perm区容量88.5MB
+   used     = 51436832 (49.053985595703125MB) // Perm区已使用容量49.1MB
+   free     = 41362144 (39.446014404296875MB) // Perm区空闲容量39.45MB
+   55.42823231152895% used                    // Perm区容量使用率55.4%
 
 19473 interned Strings occupying 2108632 bytes.
 
 ```
 
+### 使用jstat分析
 
+#### GC情况
+```
+$ jstat -gc 772 1000 500
+ S0C    S1C    S0U    S1U      EC       EU        OC         OU       PC     PU    YGC     YGCT    FGC    FGCT     GCT   
+5120.0 1024.0  0.0   646.6  29696.0  24646.5   64000.0    37056.8   90624.0 50236.4    259    3.493   4      0.790    4.283
+4608.0 5120.0 557.1   0.0   29184.0  13743.0   64000.0    37056.8   90624.0 50236.8    260    3.498   4      0.790    4.288
+4608.0 5120.0 557.1   0.0   29184.0  14655.3   64000.0    37056.8   90624.0 50236.8    260    3.498   4      0.790    4.288
+...
+4608.0 5120.0 557.1   0.0   29184.0  26850.3   64000.0    37056.8   90624.0 50236.8    260    3.498   4      0.790    4.288
+4608.0 5120.0 557.1   0.0   29184.0  26942.6   64000.0    37056.8   90624.0 50236.8    260    3.498   4      0.790    4.288
+5120.0 1024.0  0.0   955.7  28672.0   4072.4   64000.0    37056.8   90624.0 50236.8    261    3.503   4      0.790    4.293
+4608.0 4608.0  0.0   2500.8 28160.0   1407.5   64000.0    37088.8   90624.0 50236.8    263    3.516   4      0.790    4.306
+4608.0 6144.0 4588.9  0.0   30208.0  17275.4   64000.0    39112.6   90624.0 50239.7    264    3.527   4      0.790    4.317
+6656.0 6144.0  0.0   3515.5 30208.0   3371.2   64000.0    39128.6   90624.0 50239.7    265    3.534   4      0.790    4.324
+...
+4096.0 4608.0 1070.5  0.0   32768.0  31197.9   64000.0    39184.6   90624.0 50241.1    274    3.589   4      0.790    4.379
+4608.0 1536.0  0.0   1054.5 32256.0   8549.9   64000.0    39200.6   90624.0 50241.1    275    3.595   4      0.790    4.385
+...
+3584.0 4608.0 3561.3  0.0   27136.0  19167.7   64000.0    40683.6   90624.0 50247.3    284    3.683   4      0.790    4.473
+4096.0 512.0   0.0   416.0  26624.0   5290.8   64000.0    40691.6   90624.0 50247.3    285    3.688   4      0.790    4.478
 ```
 
+分析：
+1. 以上数据YGC过后，EU有明显减少。
+2. 平均每次YGC执行时间，YGCT/YGC=0.013 
+3. 平均每次FGC执行时间，FCGT/FGC=0.1975
+4. 服务运行了一段时间后GC的数量不算多
+所以，服务GC情况整体正常。
 
-```
+#### 对象情况
 
+### 使用jstack分析
