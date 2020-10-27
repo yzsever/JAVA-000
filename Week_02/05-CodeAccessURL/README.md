@@ -1,4 +1,6 @@
-## 作业5. 写一段代码，使用 HttpClient 或 OkHttp 访问 http://localhost:8801，代码提交到 Github。
+## 作业5. 写一段代码，使用HttpClient或OkHttp访问http://localhost:8801,代码提交到 Github。
+
+因本机测试8801有问题，这里使用http://localhost:8808/test进行实现测试。
 
 ### HttpClient
 ```java
