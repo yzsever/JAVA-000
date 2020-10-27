@@ -770,12 +770,12 @@ The concurrent collection cycle typically includes the following steps:
 - Concurrently resize the heap and prepare the support data structures for the next collection cycle, using one processor.
 
 并发收集周期通常包括以下步骤：
--停止所有应用程序线程，从根目录确定可访问的对象集，然后恢复所有应用程序线程。
--在应用程序线程正在执行的同时，使用一个或多个处理器跟踪可访问对象图。
--同时使用一个处理器回溯自上一步中的跟踪以来修改的对象图的各个部分。
--停止所有应用程序线程并回溯自上次检查以来可能已修改的根和对象图的节，然后恢复所有应用程序线程。
--使用一个处理器同时将无法访问的对象清除到用于分配的空闲列表中。
--同时调整堆的大小，并使用一个处理器为下一个收集周期准备支持数据结构。
+- 停止所有应用程序线程，从根目录确定可访问的对象集，然后恢复所有应用程序线程。
+- 在应用程序线程正在执行的同时，使用一个或多个处理器跟踪可访问对象图。
+- 同时使用一个处理器回溯自上一步中的跟踪以来修改的对象图的各个部分。
+- 停止所有应用程序线程并回溯自上次检查以来可能已修改的根和对象图的节，然后恢复所有应用程序线程。
+- 使用一个处理器同时将无法访问的对象清除到用于分配的空闲列表中。
+- 同时调整堆的大小，并使用一个处理器为下一个收集周期准备支持数据结构。
 
 Normally, the CMS collector uses one or more processors during the entire concurrent tracing phase, without voluntarily relinquishing them. Similarly, one processor is used for the entire concurrent sweep phase, again without relinquishing it. This overhead can be too much of a disruption for applications with response time constraints that might otherwise have used the processing cores, particularly when run on systems with just one or two processors. Incremental mode solves this problem by breaking up the concurrent phases into short bursts of activity, which are scheduled to occur midway between minor pauses.
 
@@ -1079,16 +1079,12 @@ Table 10-1 Default Values of Important Options for G1 Garbage Collector
 |---- | ---- |
 |-XX:G1HeapRegionSize=n|Sets the size of a G1 region. The value will be a power of two and can range from 1 MB to 32 MB. The goal is to have around 2048 regions based on the minimum Java heap size.|
 |-XX:MaxGCPauseMillis=200|Sets a target value for desired maximum pause time. The default value is 200 milliseconds. The specified value does not adapt to your heap size.|
-|-XX:G1NewSizePercent=5|Sets the percentage of the heap to use as the minimum for the young generation size. The default value is 5 percent of your Java heap.Foot1
-This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:DefaultMinNewGenPercent setting.|
-|-XX:G1MaxNewSizePercent=60|Sets the percentage of the heap size to use as the maximum for young generation size. The default value is 60 percent of your Java heap.Footref1
-This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:DefaultMaxNewGenPercent setting.|
-|-XX:ParallelGCThreads=n|Sets the value of the STW worker threads. Sets the value of n to the number of logical processors. The value of n is the same as the number of logical processors up to a value of 8.
-If there are more than eight logical processors, sets the value of n to approximately 5/8 of the logical processors. This works in most cases except for larger SPARC systems where the value of n can be approximately 5/16 of the logical processors.|
+|-XX:G1NewSizePercent=5|Sets the percentage of the heap to use as the minimum for the young generation size. The default value is 5 percent of your Java heap.Foot1. This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:DefaultMinNewGenPercent setting.|
+|-XX:G1MaxNewSizePercent=60|Sets the percentage of the heap size to use as the maximum for young generation size. The default value is 60 percent of your Java heap.Footref1. This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:DefaultMaxNewGenPercent setting.|
+|-XX:ParallelGCThreads=n|Sets the value of the STW worker threads. Sets the value of n to the number of logical processors. The value of n is the same as the number of logical processors up to a value of 8. If there are more than eight logical processors, sets the value of n to approximately 5/8 of the logical processors. This works in most cases except for larger SPARC systems where the value of n can be approximately 5/16 of the logical processors.|
 |-XX:ConcGCThreads=n|Sets the number of parallel marking threads. Sets n to approximately 1/4 of the number of parallel garbage collection threads (ParallelGCThreads).|
 |-XX:InitiatingHeapOccupancyPercent=45|Sets the Java heap occupancy threshold that triggers a marking cycle. The default occupancy is 45 percent of the entire Java heap.|
-|-XX:G1MixedGCLiveThresholdPercent=85|Sets the occupancy threshold for an old region to be included in a mixed garbage collection cycle. The default occupancy is 85 percent.Footref1
-This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:G1OldCSetRegionLiveThresholdPercent setting.|
+|-XX:G1MixedGCLiveThresholdPercent=85|Sets the occupancy threshold for an old region to be included in a mixed garbage collection cycle. The default occupancy is 85 percent.Footref1. This is an experimental flag. See How to Unlock Experimental VM Flags for an example. This setting replaces the -XX:G1OldCSetRegionLiveThresholdPercent setting.|
 |-XX:G1HeapWastePercent=5|Sets the percentage of heap that you are willing to waste. The Java HotSpot VM does not initiate the mixed garbage collection cycle when the reclaimable percentage is less than the heap waste percentage. The default is 5 percent.Footref1|
 |-XX:G1MixedGCCountTarget=8|Sets the target number of mixed garbage collections after a marking cycle to collect old regions with at most G1MixedGCLIveThresholdPercent live data. The default is 8 mixed garbage collections. The goal for mixed collections is to be within this target number.Footref1|
 |-XX:G1OldCSetRegionThresholdPercent=10|Sets an upper limit on the number of old regions to be collected during a mixed garbage collection cycle. The default is 10 percent of the Java heap.Footref1|
