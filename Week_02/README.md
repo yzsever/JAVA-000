@@ -3,17 +3,21 @@
 ---
 ### 本周作业
 
-#### 第 3 课作业实践
+#### 第三节课作业实践
 1. 使用 GCLogAnalysis.java 自己演练一遍串行/并行/CMS/G1的案例。 
+   - 作业1: [访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/01-GCLogAnalysisTest)
 2. 使用压测工具(wrk或sb)，演练gateway-server-0.0.1-SNAPSHOT.jar 示例。 
+   - 作业2: [访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/02-gateway-serverTest)
 3. (选做)如果自己本地有可以运行的项目，可以按照2的方式进行演练。
+
 根据上述自己对于1和2的演示，写一段对于不同 GC 的总结，提交到 Github。
-如何查看/分析不同 GC 配置下的日志信息? 各种 GC 有什么特点和使用场景?
+   - 不同GC的总结：[访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/03-SummaryOfDifferentGC)
 
 #### 第四节课作业实践
 1. (可选)运行课上的例子，以及 Netty 的例子，分析相关现象。
-2. 写一段代码，使用 HttpClient 或 OkHttp 访问 http://localhost:8801，代码提交到 Github。
 
+2. 写一段代码，使用 HttpClient 或 OkHttp 访问 http://localhost:8801，代码提交到 Github。
+   - 作业5: [访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/05-CodeAccessURL)
 ---
 
 问题1:线程池为什么创建了40个线程？
