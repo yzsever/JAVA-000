@@ -1,6 +1,6 @@
 ## 作业2. 使用压测工具(wrk或sb)，演练gateway-server-0.0.1-SNAPSHOT.jar 示例。
 
-
+### 测试结果
 |GC类别  | JVM堆大小  | RPS         | 
 |------ | ----      | ----        |  
 |串行    |128m       |41566.23     |
@@ -20,7 +20,8 @@
 |G1     |1g         |40370.64     |
 |G1     |4g         |39904.20     |
 
-
+### 吞吐量
+![gateway-server压测结果](https://github.com/yzsever/JAVA-000/blob/main/Week_02/02-gateway-serverTest/01-gateway-server压测结果.png?raw=true)
 
 ## 测试数据
 ### 串行GC

@@ -1,6 +1,6 @@
 ## 作业1. 使用 GCLogAnalysis.java 自己演练一遍串行/并行/CMS/G1的案例。
 
-
+### 测试结果：
 
 |GC类别  | JVM堆大小  | Minor GC次数 | Full GC次数 | 是否OOM  | 生成对象数 | GC 暂停时间| 单次最大GC暂停时间|
 |------ | ----      | ----        | ----       |----     |----  | ---- |
@@ -12,15 +12,20 @@
 |并行    |512m       |34           |7             |否       | 9463 | 550ms | 40ms |
 |并行    |1g         |17           |1             |否       |10731 | 470ms | 60ms |
 |并行    |4g         |2            |0             |否       | 7867 | 340ms | 200ms|
-|CMS    |128m       |7            |11            |是       | -    | 
-|CMS    |512m       |12           |0             |否       | 9636 |
-|CMS    |1g         |10           |0             |否       |11417 |
+|CMS    |128m       |7            |11            |是       | -    | 200ms | 50ms |
+|CMS    |512m       |12           |0             |否       | 9636 | 880ms | 150ms|
+|CMS    |1g         |10           |0             |否       |11417 | 540ms | 70ms |
 |CMS    |4g         |5            |0             |否       |11240 | 380ms | 90ms |
 |G1     |128m       |68           |9             |是       | -    | 80ms | 10ms |
 |G1     |512m       |194          |3             |否       |11126 | 510ms| 40ms |
 |G1     |1g         |44           |0             |否       |13448 | 310ms| 40ms | 
 |G1     |4g         |14           |0             |否       |13392 | 460ms| 70ms |
 
+### 吞吐量-生成对象数
+![GCLogAnalysis压测结果](https://github.com/yzsever/JAVA-000/blob/main/Week_02/01-GCLogAnalysisTest/01-GCLogAnalysis%E5%8E%8B%E6%B5%8B%E7%BB%93%E6%9E%9C.png?raw=true)
+
+### GC暂停时间
+![GCLogAnalysis压测总暂停时间](https://github.com/yzsever/JAVA-000/blob/main/Week_02/01-GCLogAnalysisTest/01-GCLogAnalysis压测最大暂停时间.png?raw=true)
 
 ## 测试数据
 

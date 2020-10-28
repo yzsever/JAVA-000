@@ -13,6 +13,7 @@
 ![Comparing Percentage of Time Spent in Garbage Collection](https://github.com/yzsever/JAVA-000/blob/main/Week_02/03-SummaryOfDifferentGC/02-JavaPlatform%2CStandardEditionHotSpotVirtualMachineGarbageCollectionTuningGuide/01-Image/1-1.png?raw=true)
 
 > 问题2：JVM调优到底在调什么？怎么调？
+
 JVM为垃圾收集器，堆大小和运行时编译器提供了依赖于平台的默认选择。这些选择可满足不同类型应用程序的需求，同时需要较少的命令行调整。此外，基于行为的调整会动态调整堆的大小，以满足应用程序的指定行为。
 
 有两种主要的垃圾收集性能度量：
@@ -47,12 +48,15 @@ JVM为垃圾收集器，堆大小和运行时编译器提供了依赖于平台�
 ### 调堆的大小
 
 #### 总堆
-**影响垃圾收集性能的最重要因素是总可用内存。由于收集是在世代填满时发生的，因此吞吐量与可用内存量成反比。**默认情况下，虚拟机在每个集合上增加或缩小堆，以尝试将每个集合中活动对象的可用空间比例保持在特定范围内：
-1. -XX:MinHeapFreeRatio = <minimum>
-2. -XX:MaxHeapFreeRatio = <maximum>
+**影响垃圾收集性能的最重要因素是总可用内存。由于收集是在世代填满时发生的，因此吞吐量与可用内存量成反比。**
+
+默认情况下，虚拟机在每个集合上增加或缩小堆，以尝试将每个集合中活动对象的可用空间比例保持在特定范围内：
+1. -XX:MinHeapFreeRatio = minimum
+2. -XX:MaxHeapFreeRatio = maximum
+
 总大小限制参数：
-1. -Xms <min>
-2. -Xmx <max>
+1. -Xms min
+2. -Xmx max
 
 **总堆怎么调？以下是有关服务器应用程序堆大小的一般准则：**
 - 除非您在暂停方面遇到问题，否则请尝试为虚拟机分配尽可能多的内存。默认大小通常太小。
@@ -60,7 +64,8 @@ JVM为垃圾收集器，堆大小和运行时编译器提供了依赖于平台�
 - 通常，由于分配可以并行化，因此随着处理器数量的增加而增加内存。
 
 #### 年轻代大小
-在总可用内存之后，**影响垃圾收集性能的第二大影响因素是专用于年轻代的堆的比例。**年轻代越大，Minor GC的次数就越少。但是，对于有限的堆大小，较大的年轻代意味着较小的终身代，这将增加Major GC的频率。最佳选择取决于应用程序分配的对象的生命周期分布。
+在总可用内存之后，**影响垃圾收集性能的第二大影响因素是专用于年轻代的堆的比例。**
+年轻代越大，Minor GC的次数就越少。但是，对于有限的堆大小，较大的年轻代意味着较小的终身代，这将增加Major GC的频率。最佳选择取决于应用程序分配的对象的生命周期分布。
 
 默认情况下，年轻代大小由参数NewRatio控制。
 1. -XX:NewRatio=3表示年轻代和终身代之间的比率为1：3。换句话说，伊甸园空间和幸存者空间的总大小将是堆总大小的四分之一。
@@ -109,11 +114,36 @@ Java HotSpot VM包括三种不同类型的收集器，每种收集器具有不�
 这个时候，再回头看我的测试，我发现之前根本没有考虑过对比暂停时间，所以我还得回去统计暂停时间的数据，哈哈。
 
 #### 吞吐量
-测试1：使用 GCLogAnalysis.java 自己演练一遍串行/并行/CMS/G1的案例
+测试1:使用 GCLogAnalysis.java 自己演练一遍串行/并行/CMS/G1的案例
+
+> 代码中随机产生对象，所以测试结果不一定准确
+
 ![GCLogAnalysis压测结果](https://github.com/yzsever/JAVA-000/blob/main/Week_02/01-GCLogAnalysisTest/01-GCLogAnalysis%E5%8E%8B%E6%B5%8B%E7%BB%93%E6%9E%9C.png?raw=true)
+
+1. 总堆大小为128m时，服务运行均发生了OOM，所以无数据。
+2. 总堆大小从512m到4g时，G1的生成对象数一直都是最多的。
+3. CMS的吞吐量量低于G1但是优于串行和并行GC，而且总堆越大时越明显。因为总堆变大时，年轻大也变大了，Minor GC次数将减少，同时Major GC可以并发执行。
+4. 串行和并行GC在总堆大于1G后，吞吐量开始下降。
+5. 本次测试并行GC在接近4G的时候吞吐量被串行GC反超，并行GC使用多线程进行垃圾回收，由于线程需要进行资源切换有额外的开销，所以在总堆很大的时候反而有更好的性能。
+
+测试2:使用压测工具(wrk或sb)，演练gateway-server-0.0.1-SNAPSHOT.jar 示例
+
+![gateway-server压测结果](https://github.com/yzsever/JAVA-000/blob/main/Week_02/02-gateway-serverTest/01-gateway-server压测结果.png?raw=true)
+
+1. 并行GC的吞吐量整体好于CMS GC，在200m-800m左右时好于串行GC
+2. G1 GC在128m时表现最好，有点反常。当堆很大时，性能高于其他GC
+3. CMS在堆大小适中的时候，吞吐量的表现也很不错。
 
 
 #### 暂停时间
+测试1:使用 GCLogAnalysis.java 自己演练一遍串行/并行/CMS/G1的案例
+
+![GCLogAnalysis压测最大暂停时间](https://github.com/yzsever/JAVA-000/blob/main/Week_02/01-GCLogAnalysisTest/01-GCLogAnalysis压测最大暂停时间.png?raw=true)
+
+1. 总堆小于2G时，G1的GC暂停时间是最小的。主要是因为G1是采用并发收集垃圾。
+2. 128m->512m时，随着堆大小的增大，GC的暂停时间增大。
+3. 512m->1g时, 随着堆大小的增大，GC的暂停时间减小。
+4. CMS的暂停时间反常的比其他GC高，同时512m的时候，CMS的吞吐量并不高，怀疑是因为创建了大对象。
 
 ---
 
