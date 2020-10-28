@@ -24,7 +24,7 @@
 
 ### 垃圾收集器总结脑图
 
-![垃圾收集器](https://github.com/yzsever/JAVA-000/blob/main/Week_02/02-Image/01-GC.jp2?raw=true)
+![垃圾收集器](https://github.com/yzsever/JAVA-000/blob/main/Week_02/06-Image/01-GC.jp2?raw=true)
 
 ---
 
