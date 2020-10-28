@@ -15,7 +15,7 @@
 
 ### 第四节课作业实践
 1. (可选)运行课上的例子，以及 Netty 的例子，分析相关现象。
-
+   - 作业4: [访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/04-NettyTestCase)
 2. 写一段代码，使用 HttpClient 或 OkHttp 访问 http://localhost:8801，代码提交到 Github。
    - 作业5: [访问地址](https://github.com/yzsever/JAVA-000/tree/main/Week_02/05-CodeAccessURL)
 ---
@@ -24,7 +24,7 @@
 
 ### 垃圾收集器总结脑图
 
-![垃圾收集器](https://github.com/yzsever/JAVA-000/blob/main/Week_02/06-Image/01-GC.jp2?raw=true)
+![垃圾收集器](https://github.com/yzsever/JAVA-000/blob/main/Week_02/06-Image/01-GC.jpg?raw=true)
 
 ---
 
