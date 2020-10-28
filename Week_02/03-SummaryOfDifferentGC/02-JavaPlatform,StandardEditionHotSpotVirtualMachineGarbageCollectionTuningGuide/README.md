@@ -110,13 +110,19 @@ Table 2-1 Default Runtime Compiler
 |AMD (64-bit)|Windows |Server |Server(Foot3)|
 
 > Footnote1：Client means the client runtime compiler is used. Server means the server runtime compiler is used.
+>
 > 脚注1：客户端表示使用客户端运行时编译器。 服务器表示使用服务器运行时编译器。
+>
 > Footnote2：The policy was chosen to use the client runtime compiler even on a server class machine. This choice was made because historically client applications (for example, interactive applications) were run more often on this combination of platform and operating system.
+>
 > 脚注2：选择了即使在服务器类计算机上也要使用客户端运行时编译器的策略。之所以做出此选择，是因为历史上客户端应用程序（例如，交互式应用程序）在这种平台和操作系统的组合上运行的频率更高。
+>
 > Footnote3：Only the server runtime compiler is supported.
+>
 > 脚注3：仅支持服务器运行时编译器。
 
 **Behavior-Based Tuning**
+
 基于行为的调整
 
 For the parallel collector, Java SE provides two garbage collection tuning parameters that are based on achieving a specified behavior of the application: maximum pause time goal and application throughput goal; see the section The Parallel Collector. (These two options are not available in the other collectors.) Note that these behaviors cannot always be met. The application requires a heap large enough to at least hold all of the live data. In addition, a minimum heap size may preclude reaching these desired goals.
@@ -143,7 +149,7 @@ The throughput goal is measured in terms of the time spent collecting garbage an
 
 The time spent in garbage collection is the total time for both the young generation and old generation collections combined. If the throughput goal is not being met, then the sizes of the generations are increased in an effort to increase the time that the application can run between collections.
 
-垃圾收集所花费的时间是年轻一代和老一代收集的总时间。**如果未达到吞吐量目标，那么将增加世代的大小，以增加应用程序在集合之间运行的时间**。
+垃圾收集所花费的时间是年轻代和老年代收集的总时间。**如果未达到吞吐量目标，那么将增加世代的大小，以增加应用程序在集合之间运行的时间**。
 
 #### Footprint Goal
 足迹目标
