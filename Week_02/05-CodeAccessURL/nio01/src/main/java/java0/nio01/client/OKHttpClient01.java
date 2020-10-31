@@ -20,7 +20,7 @@ public class OKHttpClient01 {
         Call call = client.newCall(request);
         try {
             // 通过Call调用execute方法同步执行
-            Response response = response = call.execute();
+            Response response = call.execute();
             // 打印请求响应内容
             System.out.println(response.body().string());
         } catch (IOException e) {
