@@ -1,6 +1,8 @@
 package io.github.kimmking.gateway.inbound;
 
+import io.github.kimmking.gateway.outbound.httpclient.HttpClientOutboundHandler;
 import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
+import io.github.kimmking.gateway.outbound.okhttp.OkHttpOutboundHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
@@ -12,11 +14,18 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final String proxyServer;
-    private HttpOutboundHandler handler;
+    // private HttpOutboundHandler handler;
+    // private HttpClientOutboundHandler handler;
+    private OkHttpOutboundHandler handler;
     
     public HttpInboundHandler(String proxyServer) {
         this.proxyServer = proxyServer;
-        handler = new HttpOutboundHandler(this.proxyServer);
+        // 0、老师实现的异步的httpClient的方案
+        // handler = new HttpOutboundHandler(this.proxyServer);
+        // 1、自己实现的同步的httpClient的方案
+        // handler = new HttpClientOutboundHandler(this.proxyServer);
+        // 2、自己实现的同步的okHttp的方案
+        handler = new OkHttpOutboundHandler(this.proxyServer);
     }
     
     @Override
