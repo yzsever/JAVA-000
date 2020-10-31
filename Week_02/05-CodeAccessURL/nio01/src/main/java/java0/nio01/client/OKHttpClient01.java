@@ -13,7 +13,7 @@ public class OKHttpClient01 {
         // 创建OkHttpClient对象
         OkHttpClient client = new OkHttpClient();
         String api = "/test";
-        String url = String.format("%s%s", "localhost:8808", api);
+        String url = String.format("%s%s", "http://localhost:8808", api);
         // 创建Request对象
         Request request = new Request.Builder().url(url).get().build();
         // 将Request 对象封装为Call
