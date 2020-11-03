@@ -56,7 +56,7 @@ public class HttpInboundServer {
                         //有连接到达时会创建一个通道
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new HttpInboundInitializer(proxyServer));
+                            ch.pipeline().addLast(new HttpInboundInitializer(proxyServer, port));
                         }
                     });
 
