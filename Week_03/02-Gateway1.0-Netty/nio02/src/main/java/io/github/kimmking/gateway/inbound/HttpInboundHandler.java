@@ -1,57 +1,126 @@
 package io.github.kimmking.gateway.inbound;
 
-import io.github.kimmking.gateway.outbound.httpclient.HttpClientOutboundHandler;
-import io.github.kimmking.gateway.outbound.httpclient4.HttpOutboundHandler;
-import io.github.kimmking.gateway.outbound.okhttp.OkHttpOutboundHandler;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
     private final String proxyServer;
-    // private HttpOutboundHandler handler;
-    // private HttpClientOutboundHandler handler;
-    private OkHttpOutboundHandler handler;
-    
+    private static final Map<ChannelId, Channel> channelMap = new ConcurrentHashMap<>();
+
     public HttpInboundHandler(String proxyServer) {
         this.proxyServer = proxyServer;
-        // 0、老师实现的异步的httpClient的方案
-        // handler = new HttpOutboundHandler(this.proxyServer);
-        // 1、自己实现的同步的httpClient的方案
-        // handler = new HttpClientOutboundHandler(this.proxyServer);
-        // 2、自己实现的同步的okHttp的方案
-        handler = new OkHttpOutboundHandler(this.proxyServer);
     }
-    
+
+    //连接处于活动状态
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.flush();
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        channelMap.put(ctx.channel().id(), channel);
+        System.out.println(channel.remoteAddress() + " 上线了");
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        try {
-            //logger.info("channelRead流量接口请求开始，时间为{}", startTime);
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        channelMap.remove(channel);
+        System.out.println(channel.remoteAddress() +" 下线了");
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        try{
+//            ByteBuf inMsg = (ByteBuf) msg;
+//            byte[] bytes = new byte[inMsg.readableBytes()];
+//            inMsg.readBytes(bytes);
+//            String inStr = new String(bytes);
+//            System.out.println("server send msg: " + inStr);
+//
+//            String response = "i am ok!";
+//            ByteBuf outMsg = ctx.alloc().buffer(4 * response.length());
+//            outMsg.writeBytes(response.getBytes());
+           // ctx.writeAndFlush(outMsg);
             FullHttpRequest fullRequest = (FullHttpRequest) msg;
-//            String uri = fullRequest.uri();
-//            //logger.info("接收到的请求url为{}", uri);
-//            if (uri.contains("/test")) {
-//                handlerTest(fullRequest, ctx);
-//            }
-    
-            handler.handle(fullRequest, ctx);
-    
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-            ReferenceCountUtil.release(msg);
+            String uri = fullRequest.uri();
+            System.out.println("接收到的请求url为{}"+ uri);
+            //ChannelFuture f = ctx.writeAndFlush(msg);
+            for(Channel ch : channelMap.values()){
+                try {
+                    ChannelFuture f = ch.writeAndFlush(msg);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+//                f.addListener((ChannelFuture futureListener) -> {
+//                    System.out.println("写回后，msg.refCnt:");
+//                });
+            }
+        }finally {
+            //ReferenceCountUtil.release(msg);
         }
     }
+
+//    @Override
+//    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+//        super.channelReadComplete(ctx);
+//        ctx.flush();
+//    }
+//
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        super.exceptionCaught(ctx, cause);
+//        ctx.close();
+//    }
+
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+//        try {
+//            //logger.info("channelRead流量接口请求开始，时间为{}", startTime);
+//           // FullHttpRequest fullRequest = (FullHttpRequest) msg;
+////            String uri = fullRequest.uri();
+////            //logger.info("接收到的请求url为{}", uri);
+////            if (uri.contains("/test")) {
+////                handlerTest(fullRequest, ctx);
+////            }
+//            //handler.handle(fullRequest, ctx);
+////            System.out.println("入站处理器被回调");
+////            //写回数据，异步任务
+////            //System.out.println("写回前，msg.refCnt:" + ((ByteBuf) msg).refCnt());
+////            ChannelFuture f = ctx.writeAndFlush(msg);
+////            f.addListener((ChannelFuture futureListener) -> {
+////                //System.out.println("写回后，msg.refCnt:" + ((ByteBuf) msg).refCnt());
+////            });
+//            System.out.println("入站处理器被回调");
+//            ByteBuf inMsg = (ByteBuf) msg;
+//            byte[] bytes = new byte[inMsg.readableBytes()];
+//            inMsg.readBytes(bytes);
+//            String inStr = new String(bytes);
+//            System.out.println("client send msg: " + inStr);
+//
+//            String response = "i am ok!";
+//            ByteBuf outMsg = ctx.alloc().buffer(4 * response.length());
+//            outMsg.writeBytes(response.getBytes());
+//            ctx.writeAndFlush(outMsg);
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            ReferenceCountUtil.release(msg);
+//        }
+//    }
 
 //    private void handlerTest(FullHttpRequest fullRequest, ChannelHandlerContext ctx) {
 //        FullHttpResponse response = null;
@@ -76,10 +145,4 @@ public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
 //        }
 //    }
 //
-//    @Override
-//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-//        cause.printStackTrace();
-//        ctx.close();
-//    }
-
 }

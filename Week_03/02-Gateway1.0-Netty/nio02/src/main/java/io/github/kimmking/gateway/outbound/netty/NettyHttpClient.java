@@ -44,42 +44,23 @@ public class NettyHttpClient {
                     ch.pipeline().addLast(new HttpResponseDecoder());
                     // 客户端发送的是httprequest，所以要使用HttpRequestEncoder进行编码
                     ch.pipeline().addLast(new HttpRequestEncoder());
-                    ch.pipeline().addLast(new NettyHttpClientOutboundHandler());
+                    ch.pipeline().addLast(NettyHttpClientOutboundHandler.INSTANCE);
                 }
             });
 
-            // Start the client.
-//            ChannelFuture f = b.connect(host, port).sync();
-//
-//
-//            f.channel().write(request);
-//            f.channel().flush();
-//            f.channel().closeFuture().sync();
             ChannelFuture f = b.connect();
-//            f.addListener((ChannelFuture futureListener) -> {
-//                if (futureListener.isSuccess()) {
-//                    Logger.info("EchoClient客户端连接成功!");
-//                } else {
-//                    Logger.info("EchoClient客户端连接失败!");
-//                }
-//            });
+            f.addListener((ChannelFuture futureListener) ->
+            {
+                if (futureListener.isSuccess()) {
+                    System.out.println("EchoClient客户端连接成功!");
+                } else {
+                    System.out.println("EchoClient客户端连接失败!");
+                }
+            });
             // 阻塞,直到连接成功
             f.sync();
-
-//            Channel channel = f.channel();
-//            Scanner scanner = new Scanner(System.in);
-//            Print.tcfo("请输入发送内容:");
-//            while (scanner.hasNext()) {
-//                //获取输入的内容
-//                String next = scanner.next();
-//                byte[] bytes = (Dateutil.getNow() + " >>"
-//                        + next).getBytes("UTF-8");
-//                //发送ByteBuf
-//                ByteBuf buffer = channel.alloc().buffer();
-//                buffer.writeBytes(bytes);
-//                channel.writeAndFlush(buffer);
-//                Print.tcfo("请输入发送内容:");
-//            }
+            // 等待服务器  socket 关闭 。
+            f.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -90,7 +71,7 @@ public class NettyHttpClient {
     }
     // main方法
     public static void main(String[] args) throws Exception {
-        NettyHttpClient client = new NettyHttpClient("127.0.0.1", 8844);
+        NettyHttpClient client = new NettyHttpClient("127.0.0.1", 8888);
         client.runClient();
     }
 }
