@@ -1,6 +1,6 @@
-package io.github.kimmking.gateway;
+package gateway;
 
-import io.github.kimmking.gateway.inbound.HttpInboundServer;
+import gateway.inbound.HttpInboundServer;
 
 public class NettyServerApplication {
     
