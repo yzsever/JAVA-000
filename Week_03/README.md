@@ -2,10 +2,10 @@
 按今天的课程要求,实现一个网关,基础代码可以 fork:https://github.com/kimmking/JavaCourseCodes/02nio/nio02 文件夹下实现以后,代码提交到 Github。
 1. *周四作业(必做):整合你上次作业的 httpclient/okhttp;
    - 压测：调整NettyServer和HttpClient的参数
-   - [作业1目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/01-Gateway1.0/nio02)
+   - [作业1目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/01-Gateway1.0/)
 2. 周四作业(可选):使用 netty 实现后端 http 访问(代替上一步骤);
    - 压测：调整NettyServer和NettyClient的参数
-   - [作业2目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/02-Gateway1.0-Netty/nio02)
+   - [作业2目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/02-Gateway1.0-Netty/)
 3. *周六作业（必做）:实现一个request的过滤器filter。
    - filter里把我们请求的http头拿到，然后在里面添加一个新的key-value，key是nio，value是自己的名字拼音。
    - 实际请求后端服务的时候，把这些请求所有的头拿出来，在实际调用后端服务之前全部添加到对后端的请求头里。（我们去调用后端服务的时候，那个请求里面就比网关接入请求多一个我们自定义的头。这样就相当于我们的程序在网关的filter这边做了一个加强）

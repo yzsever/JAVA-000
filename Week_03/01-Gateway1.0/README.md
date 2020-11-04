@@ -5,7 +5,7 @@
 
 #### httpclient实现
 HttpInboundHandler修改内容：
-```
+```java
 ...
     private HttpClientOutboundHandler handler;
     
@@ -17,7 +17,7 @@ HttpInboundHandler修改内容：
 ```
 
 HttpClientOutboundHandler主要内容
-```
+```java
 public class HttpClientOutboundHandler {
 
     private CloseableHttpClient httpClient;
@@ -84,7 +84,7 @@ public class HttpClientOutboundHandler {
 
 #### okhttp实现
 HttpInboundHandler修改内容：
-```
+```java
 ...
     private OkHttpOutboundHandler handler;
     
@@ -97,7 +97,7 @@ HttpInboundHandler修改内容：
 ```
 
 OkHttpOutboundHandler主要内容
-```
+```java
 public class OkHttpOutboundHandler {
 
     private OkHttpClient okHttpClient;
