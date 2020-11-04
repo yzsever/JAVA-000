@@ -12,7 +12,7 @@
    - [作业3目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/03-Gateway1.0-Filter/)
 4. 周六作业(可选):实现路由
    - 把现在只代理的一个后端服务，变成了可以代理多个后端服务。我们通过最简的路由算法，比如说随机的对后端的两个服务取一个，然后调用这个服务返回数据。
-   - [作业4目录]()
+   - [作业4目录](https://github.com/yzsever/JAVA-000/tree/main/Week_03/04-Gateway1.0-Router/)
 
 之后可以进行更多的扩展：
 1. 定义一个过滤响应数据和报文头的resposeFilter
