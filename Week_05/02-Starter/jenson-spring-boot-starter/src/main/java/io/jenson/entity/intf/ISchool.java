@@ -1,4 +1,4 @@
-package io.jenson.entity;
+package io.jenson.entity.intf;
 
 public interface ISchool {
     

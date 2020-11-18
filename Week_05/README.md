@@ -23,3 +23,7 @@
    - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/01-Bean)
    - 实现了通过XML形式装配
    - 实现了通过Annotation形式自动装配
+2.（必做）给前面课程提供的 Student/Klass/School 实现自动配置和 Starter。
+   - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/02-Starter)
+   - jenson-spring-boot-starter 自定义Starter
+   - start-test 测试项目
