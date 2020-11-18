@@ -27,3 +27,8 @@
    - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/02-Starter)
    - jenson-spring-boot-starter 自定义Starter
    - start-test 测试项目
+3.（必做）研究一下 JDBC 接口和数据库连接池，掌握它们的设计和用法：
+   - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/03-JDBC)
+   - 1.[JDBCCRUDDemo01.java]使用 JDBC 原生接口，实现数据库的增删改查操作。
+   - 2.[TransactionDemo02.java]使用事务，PrepareStatement 方式，批处理方式，改进上述操作。
+   - 3.[HikariDemo03.java]配置 Hikari 连接池，改进上述操作。
