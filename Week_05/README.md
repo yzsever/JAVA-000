@@ -19,15 +19,15 @@
 ---
 
 ### 完成作业如下：
-1.（必做）写代码实现 Spring Bean 的装配，方式越多越好（XML、Annotation 都可以）, 提交到 Github。
+1. （必做）写代码实现 Spring Bean 的装配，方式越多越好（XML、Annotation 都可以）, 提交到 Github。
    - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/01-Bean)
    - 实现了通过XML形式装配
    - 实现了通过Annotation形式自动装配
-2.（必做）给前面课程提供的 Student/Klass/School 实现自动配置和 Starter。
+2. （必做）给前面课程提供的 Student/Klass/School 实现自动配置和 Starter。
    - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/02-Starter)
    - jenson-spring-boot-starter 自定义Starter
    - start-test 测试项目
-3.（必做）研究一下 JDBC 接口和数据库连接池，掌握它们的设计和用法：
+3. （必做）研究一下 JDBC 接口和数据库连接池，掌握它们的设计和用法：
    - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_05/03-JDBC)
    - 1.[JDBCCRUDDemo01.java]使用 JDBC 原生接口，实现数据库的增删改查操作。
    - 2.[TransactionDemo02.java]使用事务，PrepareStatement 方式，批处理方式，改进上述操作。
