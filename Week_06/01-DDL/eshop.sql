@@ -72,23 +72,23 @@ create table commodity
 /*==============================================================*/
 /* Table: "order"                                               */
 /*==============================================================*/
-create table "order"
-(
-   order_id             bigint not null,
-   user_id              bigint,
-   prices               int,
-   status               smallint,
-   is_deleted           smallint,
-   crteator_id          bigint,
-   create_time          bigint,
-   updater_id           bigint,
-   update_time          bigint,
-   address              varchar(128),
-   phone                varchar(32),
-   province             smallint,
-   city                 smallint,
-   primary key (order_id)
-);
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE `order` (
+   `order_id`             bigint NOT NULL,
+   `user_id`              bigint,
+   `prices`               int,
+   `status`               smallint,
+   `is_deleted`           smallint,
+   `crteator_id`          bigint,
+   `create_time`          bigint,
+   `updater_id`           bigint,
+   `update_time`          bigint,
+   `address`              varchar(128),
+   `phone`                varchar(32),
+   `province`             smallint,
+   `city`                 smallint,
+   PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 /*==============================================================*/
 /* Table: supplier                                              */
