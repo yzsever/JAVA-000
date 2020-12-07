@@ -15,7 +15,7 @@ ec4a868c061d        mysql:5.7           "docker-entrypoint.s…"   45 hours ago 
 #### 2、在管网下载shardingsphere-proxy的tar包[下载地址](https://www.apache.org/dyn/closer.cgi/shardingsphere/5.0.0-alpha/apache-shardingsphere-5.0.0-alpha-shardingsphere-proxy-bin.tar.gz)。
    - 服务器上准备java环境(使用版本：1.8.0_271)
    - tar -zxvf apache-shardingsphere-5.0.0-alpha-shardingsphere-proxy-bin.tar.gz 解压
-   - 进入%SHARDINGSPHERE_PROXY_HOME%/lib 目录。 执行 wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar下载mysql驱动
+   - 进入%SHARDINGSPHERE_PROXY_HOME%/lib 目录。 下载mysql驱动执行 `wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar`
    - 配置文件
       - %SHARDINGSPHERE_PROXY_HOME%/conf/config-sharding.yaml
       - %SHARDINGSPHERE_PROXY_HOME%/conf/server.yaml
