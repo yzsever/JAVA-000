@@ -16,7 +16,9 @@ Week08 作业题目（周六）：
 6. （选做☆）设计实现一个 TCC 分布式事务框架的简单 Demo，需要实现事务管理器，不需要实现全局事务的持久化和恢复、高可用等。
 7. （选做☆）设计实现一个 AT 分布式事务框架的简单 Demo，仅需要支持根据主键 id 进行的单个删改操作的 SQL 或插入操作的事务。
 
-### 待完成作业
+### 完成作业
 #### 必做
 1. （必做）设计对前面的订单表数据进行水平分库分表，拆分2个库，每个库16张表。并在新结构在演示常见的增删改查操作。代码、sql和配置文件，上传到 Github。
+   - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_08/01-ShardingSphere-Proxy)
 2. （必做）基于 hmily TCC 或 ShardingSphere 的 Atomikos XA 实现一个简单的分布式事务应用 demo（二选一），提交到 Github。
+   - [作业目录](https://github.com/yzsever/JAVA-000/tree/main/Week_08/02-SS-Atomikos_XA)
