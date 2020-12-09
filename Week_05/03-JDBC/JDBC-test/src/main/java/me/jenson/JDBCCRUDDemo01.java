@@ -1,8 +1,8 @@
-package io.jenson;
+package me.jenson;
 
-import io.jenson.config.MySQLConstant;
-import io.jenson.entity.User;
-import io.jenson.utils.DaoUtil;
+import me.jenson.config.MySQLConstant;
+import me.jenson.entity.User;
+import me.jenson.utils.DaoUtil;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

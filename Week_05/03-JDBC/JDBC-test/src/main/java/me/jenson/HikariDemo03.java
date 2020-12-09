@@ -1,10 +1,13 @@
-package io.jenson;
+package me.jenson;
 
-import io.jenson.config.MySQLConstant;
-import io.jenson.entity.User;
-import io.jenson.utils.DaoUtil;
-import io.jenson.utils.StringUtil;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import me.jenson.config.MySQLConstant;
+import me.jenson.entity.User;
+import me.jenson.utils.DaoUtil;
+import me.jenson.utils.StringUtil;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,25 +17,43 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionDemo02 {
+public class HikariDemo03 {
 
     private static final String url = MySQLConstant.URL;
     private static final String username = MySQLConstant.USERNAME;
     private static final String password = MySQLConstant.PASSWORD;
+    private static final String jdbcDriver = MySQLConstant.JDBC_DRIVER;
 
     public static void main(String[] args) {
+        // Build hikariConfig
+        final HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setDriverClassName(jdbcDriver);
+        hikariConfig.setJdbcUrl(url);
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
+
+        hikariConfig.setMaximumPoolSize(5);
+        hikariConfig.setConnectionTestQuery("SELECT 1");
+        hikariConfig.setPoolName("springHikariCP");
+
+        hikariConfig.addDataSourceProperty("dataSource.cachePrepStmts", "true");
+        hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSize", "250");
+        hikariConfig.addDataSourceProperty("dataSource.prepStmtCacheSqlLimit", "2048");
+        hikariConfig.addDataSourceProperty("dataSource.useServerPrepStmts", "true");
+
+        DataSource dataSource = new HikariDataSource(hikariConfig);
         // batch insert
         List<User> users = new ArrayList<User>();
         users.add(new User("zhangsan"));
         users.add(new User("lisi"));
         users.add(new User("wangwu"));
-        List<Long> userIDs = insertUsers(users);
+        List<Long> userIDs = insertUsers(dataSource, users);
         // query insert datas
-        List<User> queryUsers = selectUserByUserIDs(userIDs);
+        List<User> queryUsers = selectUserByUserIDs(dataSource, userIDs);
         System.out.println(queryUsers);
     }
 
-    public static List<Long> insertUsers(List<User> users) {
+    public static List<Long> insertUsers(DataSource dataSource, List<User> users) {
         String sql = "insert into user(user_name) values (?)";
         Connection conn = null;
         PreparedStatement ps = null;
@@ -70,14 +91,14 @@ public class TransactionDemo02 {
         return userIDs;
     }
 
-    public static List<User> selectUserByUserIDs(List<Long> userIDs) {
+    public static List<User> selectUserByUserIDs(DataSource dataSource, List<Long> userIDs) {
         String sql = "select * from user where user_id in (" + StringUtil.convertIDsToIDStr(userIDs, ",") + ")";
         List<User> users = new ArrayList<User>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            conn = DriverManager.getConnection(url, username, password);
+            conn = dataSource.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -93,5 +114,4 @@ public class TransactionDemo02 {
         }
         return users;
     }
-
 }

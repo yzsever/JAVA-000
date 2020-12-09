@@ -1,4 +1,4 @@
-package io.jenson.entity;
+package me.jenson.entity;
 
 public class User {
     private Long userID;

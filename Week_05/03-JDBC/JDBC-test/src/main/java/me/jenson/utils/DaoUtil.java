@@ -1,4 +1,4 @@
-package io.jenson.utils;
+package me.jenson.utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

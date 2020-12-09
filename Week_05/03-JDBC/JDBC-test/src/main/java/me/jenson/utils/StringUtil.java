@@ -1,4 +1,4 @@
-package io.jenson.utils;
+package me.jenson.utils;
 
 import java.util.Iterator;
 
