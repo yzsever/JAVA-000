@@ -9,7 +9,8 @@
    - load data local infile 'file_name' into table table_name
 4. 索引和约束问题
    - 数据导入完成后，再统一建立索引
-老师给的参考效率比较：Load Data > Procedure > PreparedStatement
+
+> 老师给的参考效率比较：Load Data > Procedure > PreparedStatement
 
 ### 测试结果
 |批量写入方法  |描述        | 第一次结果  | 第二次结果 | 第三次结果 | 平均结果  | 
@@ -99,8 +100,8 @@ lines terminated by '\n'
 ```
 
 ### 参考文档
-[mysql-fill-a-table-within-a-stored-procedure-efficiently](https://stackoverflow.com/questions/17136592/mysql-fill-a-table-within-a-stored-procedure-efficiently?noredirect=1&lq=1)
-[are-stored-procedures-more-efficient-in-general-than-inline-statements-on-mode](https://stackoverflow.com/questions/59880/are-stored-procedures-more-efficient-in-general-than-inline-statements-on-mode)
+1. [mysql-fill-a-table-within-a-stored-procedure-efficiently](https://stackoverflow.com/questions/17136592/mysql-fill-a-table-within-a-stored-procedure-efficiently?noredirect=1&lq=1)
+2. [are-stored-procedures-more-efficient-in-general-than-inline-statements-on-mode](https://stackoverflow.com/questions/59880/are-stored-procedures-more-efficient-in-general-than-inline-statements-on-mode)
 
 
 ### 花式踩坑
