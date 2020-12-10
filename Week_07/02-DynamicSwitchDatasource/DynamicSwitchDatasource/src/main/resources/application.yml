@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    master:
+      driver-class-name: ${spring.datasource.driver-class-name}
+      jdbcUrl: jdbc:mysql://10.0.0.123:3306/test?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: root
+    slave:
+      driver-class-name: ${spring.datasource.driver-class-name}
+      jdbcUrl: jdbc:mysql://10.0.0.123:3306/test01?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: root
