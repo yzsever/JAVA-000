@@ -19,8 +19,11 @@ Week07 作业题目（周六）：
 6. （选做）配置 MGR，模拟 master 宕机
 7. （选做）配置 Orchestrator，模拟 master 宕机，演练 UI 调整拓扑结构
 
-### 待完成作业
+### 完成作业
 #### 必做
 1. （必做）按自己设计的表结构，插入 100 万订单模拟数据，测试不同方式的插入效率
+   - [作业目录:01-InsertData](https://github.com/yzsever/JAVA-000/tree/main/Week_07/01-InsertData)
 2. （必做）读写分离 - 动态切换数据源版本 1.0
+   - [作业目录:02-DynamicSwitchDatasource](https://github.com/yzsever/JAVA-000/tree/main/Week_07/02-DynamicSwitchDatasource)
 3. （必做）读写分离 - 数据库框架版本 2.0
+   - [作业目录:03-ShardingSphere-RWSplitting](https://github.com/yzsever/JAVA-000/tree/main/Week_07/03-ShardingSphere-RWSplitting)
