@@ -2,9 +2,11 @@ package io.kimmking.rpcfx.server;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.thoughtworks.xstream.XStream;
 import io.kimmking.rpcfx.api.RpcfxRequest;
 import io.kimmking.rpcfx.api.RpcfxResolver;
 import io.kimmking.rpcfx.api.RpcfxResponse;
+import io.kimmking.rpcfx.exception.RpcfxException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,7 +20,35 @@ public class RpcfxInvoker {
         this.resolver = resolver;
     }
 
-    public RpcfxResponse invoke(RpcfxRequest request) {
+    XStream xstream = new XStream();
+
+    public String invoke(RpcfxRequest request) {
+        RpcfxResponse response = new RpcfxResponse();
+        String serviceClass = request.getServiceClass();
+
+        try {
+            // 作业1：改成泛型和反射
+            Class<?> klass = Class.forName(serviceClass);
+            // resolve方法支持泛型，参考Spring的getBean方法
+            Object service = resolver.resolve(klass);//this.applicationContext.getBean(serviceClass);
+            Method method = resolveMethodFromClass(service.getClass(), request.getMethod());
+            Object result = method.invoke(service, request.getParams()); // dubbo, fastjson,
+            // Q1.两次json序列化能否合并成一个 ===> Use xstream
+            // response.setResult(JSON.toJSONString(result, SerializerFeature.WriteClassName));
+            response.setResult(result);
+            response.setStatus(true);
+            return xstream.toXML(response);
+        } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+            // Q2.封装一个统一的RpcfxException, 客户端也需要判断异常
+            e.printStackTrace();
+            response.setException(new RpcfxException(RpcfxException.BIZ_EXCEPTION, e));
+            response.setStatus(false);
+            // Q3.Xstream ===> response转成xml的形式
+            return xstream.toXML(response);
+        }
+    }
+
+    public RpcfxResponse oldInvoke(RpcfxRequest request) {
         RpcfxResponse response = new RpcfxResponse();
         String serviceClass = request.getServiceClass();
 

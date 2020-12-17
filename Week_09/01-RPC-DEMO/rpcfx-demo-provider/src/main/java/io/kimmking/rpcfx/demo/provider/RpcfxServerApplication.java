@@ -25,9 +25,14 @@ public class RpcfxServerApplication {
 	@Autowired
 	RpcfxInvoker invoker;
 
+	@PostMapping("/old")
+	public RpcfxResponse oldInvoke(@RequestBody RpcfxRequest request) {
+		return invoker.oldInvoke(request);
+	}
+
 	@PostMapping("/")
-	public RpcfxResponse invoke(@RequestBody RpcfxRequest request) {
-		return invoker.invoke(request);
+	public String invoke(@RequestBody RpcfxRequest request) {
+		return invoker.invoke(request); //由xstreamresponse转成xml的形式,client端接收后需要转成对象
 	}
 
 	@Bean
@@ -40,14 +45,15 @@ public class RpcfxServerApplication {
 		return new DemoResolver();
 	}
 
-	// 能否去掉name
-	//
-	@Bean(name = "io.kimmking.rpcfx.demo.api.UserService")
+	// 能否去掉name ===> getBean By Type
+	// @Bean(name = "io.kimmking.rpcfx.demo.api.UserService")
+	@Bean
 	public UserService createUserService(){
 		return new UserServiceImpl();
 	}
 
-	@Bean(name = "io.kimmking.rpcfx.demo.api.OrderService")
+	//@Bean(name = "io.kimmking.rpcfx.demo.api.OrderService")
+	@Bean
 	public OrderService createOrderService(){
 		return new OrderServiceImpl();
 	}
