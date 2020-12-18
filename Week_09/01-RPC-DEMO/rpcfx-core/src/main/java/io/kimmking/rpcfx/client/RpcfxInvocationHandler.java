@@ -6,6 +6,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import io.kimmking.rpcfx.api.RpcfxRequest;
 import io.kimmking.rpcfx.api.RpcfxResponse;
+import io.kimmking.rpcfx.client.netty.NettyHttpClient;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -34,14 +35,16 @@ public class RpcfxInvocationHandler implements InvocationHandler {
     // 2.尝试使用httpclient或者netty client
     private final OkHttpClient client = new OkHttpClient();
 
+    private final NettyHttpClient nettyHttpClient = new NettyHttpClient();
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] params) throws Throwable {
         RpcfxRequest request = new RpcfxRequest();
         request.setServiceClass(this.serviceClass.getName());
         request.setMethod(method.getName());
         request.setParams(params);
-
-        String responseXML = post(request, url);
+        // 使用Netty调用后端服务
+        String responseXML = nettyPost(request, url);
         RpcfxResponse response = (RpcfxResponse) xstream.fromXML(responseXML);
 
         // 这里判断response.status，处理异常
@@ -62,6 +65,15 @@ public class RpcfxInvocationHandler implements InvocationHandler {
                 .build();
         String respJson = client.newCall(request).execute().body().string();
         System.out.println("resp json: "+respJson);
+        // return JSON.parseObject(respJson, RpcfxResponse.class);
+        return respJson;
+    }
+
+    private String nettyPost(RpcfxRequest req, String url) throws IOException {
+        String reqJson = JSON.toJSONString(req);
+        System.out.println("NettyPost req json: "+reqJson);
+        String respJson = nettyHttpClient.handle(reqJson, url);
+        System.out.println("NettyPost resp json: "+respJson);
         // return JSON.parseObject(respJson, RpcfxResponse.class);
         return respJson;
     }
