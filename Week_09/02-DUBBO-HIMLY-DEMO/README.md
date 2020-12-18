@@ -76,6 +76,10 @@ CREATE TABLE `freeze_account` (
    - 水平分库，以user_id作为进行分表
 
 
+### 参考文档
+1. [himly-dubbo用户手册](https://dromara.org/website/zh-cn/docs/hmily/user-dubbo.html)
+
+
 
 
 
