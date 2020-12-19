@@ -38,14 +38,14 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!-- Apache Dubbo  -->
-			<dependency>
-				<groupId>org.apache.dubbo</groupId>
-				<artifactId>dubbo-dependencies-bom</artifactId>
-				<version>${dubbo.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
+			<!--&lt;!&ndash; Apache Dubbo  &ndash;&gt;-->
+			<!--<dependency>-->
+				<!--<groupId>org.apache.dubbo</groupId>-->
+				<!--<artifactId>dubbo-dependencies-bom</artifactId>-->
+				<!--<version>${dubbo.version}</version>-->
+				<!--<type>pom</type>-->
+				<!--<scope>import</scope>-->
+			<!--</dependency>-->
 
 		</dependencies>
 	</dependencyManagement>
@@ -62,11 +62,11 @@
 		</dependency>
 
 		<!-- Dubbo Spring Boot Starter -->
-		<dependency>
-			<groupId>org.apache.dubbo</groupId>
-			<artifactId>dubbo-spring-boot-starter</artifactId>
-			<version>${dubbo.version}</version>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.apache.dubbo</groupId>-->
+			<!--<artifactId>dubbo-spring-boot-starter</artifactId>-->
+			<!--<version>${dubbo.version}</version>-->
+		<!--</dependency>-->
 
 		<!-- Zookeeper dependencies -->
 		<dependency>

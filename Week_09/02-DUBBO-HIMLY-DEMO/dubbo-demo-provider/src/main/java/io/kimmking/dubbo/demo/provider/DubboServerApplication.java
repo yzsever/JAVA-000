@@ -5,7 +5,9 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 
+@ImportResource({"classpath:spring-dubbo.xml"})
 @SpringBootApplication
 public class DubboServerApplication {
 
@@ -13,8 +15,4 @@ public class DubboServerApplication {
 		SpringApplication.run(DubboServerApplication.class, args);
 	}
 
-	@Bean
-	public BeanPostProcessor refererAnnotationBeanPostProcessor() {
-		return new RefererAnnotationBeanPostProcessor();
-	}
 }

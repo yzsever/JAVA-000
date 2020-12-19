@@ -1,10 +1,10 @@
 package io.kimmking.dubbo.demo.provider;
 
 import io.kimmking.dubbo.demo.api.ChangeIntoUSDService;
-import org.apache.dubbo.config.annotation.DubboService;
 import org.dromara.hmily.annotation.HmilyTCC;
+import org.springframework.stereotype.Service;
 
-@DubboService(version = "1.0.0")
+@Service("changeIntoUSDService")
 public class ChangeIntoUSDServiceImpl implements ChangeIntoUSDService {
 
     @Override
@@ -13,11 +13,11 @@ public class ChangeIntoUSDServiceImpl implements ChangeIntoUSDService {
         System.out.println("==================TryChangeFromCNH===================");
     }
 
-    public void confirmChangeFromCNH(){
+    public void confirmChangeFromCNH(Integer userID, Integer amount){
         System.out.println("==================ConfirmChangeFromCNH===================");
     }
 
-    public void cancelChangeFromCNH(){
+    public void cancelChangeFromCNH(Integer userID, Integer amount){
         System.out.println("==================CancelChangeFromCNH===================");
     }
 }

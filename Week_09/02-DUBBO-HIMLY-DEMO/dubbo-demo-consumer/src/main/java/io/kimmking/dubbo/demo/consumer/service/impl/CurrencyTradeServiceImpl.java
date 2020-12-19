@@ -3,18 +3,23 @@ package io.kimmking.dubbo.demo.consumer.service.impl;
 import io.kimmking.dubbo.demo.api.ChangeIntoCNHService;
 import io.kimmking.dubbo.demo.api.ChangeIntoUSDService;
 import io.kimmking.dubbo.demo.consumer.service.CurrencyTradeService;
-import org.apache.dubbo.config.annotation.DubboReference;
 import org.dromara.hmily.annotation.HmilyTCC;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CurrencyTradeServiceImpl implements CurrencyTradeService {
 
-    @DubboReference(version = "1.0.0", url = "dubbo://127.0.0.1:12345")
     private ChangeIntoUSDService changeIntoUSDService;
 
-    @DubboReference(version = "1.0.0", url = "dubbo://127.0.0.1:12345")
     private ChangeIntoCNHService changeIntoCNHService;
+
+    @Autowired(required = false)
+    public CurrencyTradeServiceImpl(ChangeIntoUSDService changeIntoUSDService,
+                                    ChangeIntoCNHService changeIntoCNHService) {
+        this.changeIntoUSDService = changeIntoUSDService;
+        this.changeIntoCNHService = changeIntoCNHService;
+    }
 
     @Override
     @HmilyTCC(confirmMethod = "confirmUserAAndBCurrenyTrade", cancelMethod = "cancelUserAAndBCurrenyTrade")

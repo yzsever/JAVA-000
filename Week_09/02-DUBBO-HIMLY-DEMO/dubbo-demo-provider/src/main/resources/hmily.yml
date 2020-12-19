@@ -27,9 +27,9 @@ hmily:
 repository:
   database:
     driverClassName: com.mysql.jdbc.Driver
-    url : jdbc:mysql://10.0.0.123:3306/hmily?useUnicode=true&characterEncoding=utf8
+    url : jdbc:mysql://localhost:3306/hmily?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: root
-    password: magima.1
+    password: 123456
     maxActive: 20
     minIdle: 10
     connectionTimeout: 30000
