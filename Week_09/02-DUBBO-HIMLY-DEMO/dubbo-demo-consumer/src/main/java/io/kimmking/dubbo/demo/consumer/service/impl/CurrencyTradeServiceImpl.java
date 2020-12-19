@@ -1,7 +1,9 @@
 package io.kimmking.dubbo.demo.consumer.service.impl;
 
-import io.kimmking.dubbo.demo.api.ChangeIntoCNHService;
-import io.kimmking.dubbo.demo.api.ChangeIntoUSDService;
+import io.kimmking.dubbo.demo.api.entity.ChangeIntoCNHDTO;
+import io.kimmking.dubbo.demo.api.entity.ChangeIntoUSDDTO;
+import io.kimmking.dubbo.demo.api.service.ChangeIntoCNHService;
+import io.kimmking.dubbo.demo.api.service.ChangeIntoUSDService;
 import io.kimmking.dubbo.demo.consumer.service.CurrencyTradeService;
 import org.dromara.hmily.annotation.HmilyTCC;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +26,12 @@ public class CurrencyTradeServiceImpl implements CurrencyTradeService {
     @Override
     @HmilyTCC(confirmMethod = "confirmUserAAndBCurrenyTrade", cancelMethod = "cancelUserAAndBCurrenyTrade")
     public void userAAndBCurrenyTrade() {
-        // 1. 用户 A 使用 1 美元兑换 7 人民币 ;
-        changeIntoCNHService.changeFromUSD(2, 1);
         // 2. 用户 B 使用 7 人民币兑换 1 美元 ;
-        changeIntoUSDService.changeFromCNH(3, 7);
+        ChangeIntoUSDDTO changeIntoUSDDTO = new ChangeIntoUSDDTO(3, 7);
+        changeIntoUSDService.changeFromCNH(changeIntoUSDDTO);
+        // 1. 用户 A 使用 1 美元兑换 7 人民币 ;
+        ChangeIntoCNHDTO changeIntoCNHDTO = new ChangeIntoCNHDTO(2, 1);
+        changeIntoCNHService.changeFromUSD(changeIntoCNHDTO);
     }
 
     public void confirmUserAAndBCurrenyTrade() {

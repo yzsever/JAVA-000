@@ -15,7 +15,7 @@ hmily:
     recoverDelayTime: 60
     cleanDelayTime: 180
     limit: 200
-    retryMax: 10
+    retryMax: 2
     bufferSize: 8192
     consumerThreads: 16
     asyncRepository: true

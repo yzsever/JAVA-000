@@ -4,6 +4,23 @@ server:
 spring:
   application:
     name: dubbo-demo-provider
+  datasource:
+    url: jdbc:mysql://localhost:3306/trade?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    ## Hibernate Properties
+    #The SQL dialect makes Hibernate generate better SQL for the chosen database
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    # Hibernate ddl auto (create, create-drop, validate, update)
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
 dubbo:
   scan:
     base-packages: io.kimmking.dubbo.demo.provider
@@ -14,3 +31,11 @@ dubbo:
     address: zookeeper://localhost:2181
   metadata-report:
     address: zookeeper://localhost:2181
+
+mybatis:
+  type-aliases-package: io.kimmking.dubbo.demo.provider.entity
+  type-handlers-package: io.kimmking.dubbo.demo.provider.repository
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30

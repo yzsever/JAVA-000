@@ -19,11 +19,11 @@
                     queues="0" buffer="8192" accepts="0" payload="8388608"/>
 
     <dubbo:reference timeout="500000000"
-                     interface="io.kimmking.dubbo.demo.api.ChangeIntoCNHService"
+                     interface="io.kimmking.dubbo.demo.api.service.ChangeIntoCNHService"
                      id="changeIntoCNHService"
                      retries="0" check="false" actives="20" loadbalance="hmilyRandom"/>
     <dubbo:reference timeout="500000000"
-                     interface="io.kimmking.dubbo.demo.api.ChangeIntoUSDService"
+                     interface="io.kimmking.dubbo.demo.api.service.ChangeIntoUSDService"
                      id="changeIntoUSDService"
                      retries="0" check="false" actives="20" loadbalance="hmilyRandom"/>
 
