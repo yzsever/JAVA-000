@@ -74,11 +74,82 @@ CREATE TABLE `freeze_account` (
 3、实现方法
 1. A库、B库
    - 水平分库，以user_id作为进行分表
+   - 使用SharingSphere-Proxy部署分库分表，database使用trade-proxy数据库
+
+### himly+dubbo(apache dubbo)实现TCC
+1、引入himly依赖(spring boot)
+```
+<dependency>
+    <groupId>org.dromara</groupId>
+    <artifactId>hmily-spring-boot-starter-apache-dubbo</artifactId>
+    <version>2.1.1</version>
+</dependency>
+```
+
+2、在项目的 resource 新建文件名为:hmily.yml配置文件（local模式）
+```
+hmily:
+  server:
+    configMode: local
+    appName: xiaoyu
+  #  如果server.configMode eq local 的时候才会读取到这里的配置信息.
+  config:
+    appName: xiaoyu
+    serializer: kryo
+    contextTransmittalMode: threadLocal
+    scheduledThreadMax: 16
+    scheduledRecoveryDelay: 60
+    scheduledCleanDelay: 60
+    scheduledPhyDeletedDelay: 600
+    scheduledInitDelay: 30
+    recoverDelayTime: 60
+    cleanDelayTime: 180
+    limit: 200
+    retryMax: 10
+    bufferSize: 8192
+    consumerThreads: 16
+    asyncRepository: true
+    autoSql: true
+    phyDeleted: true
+    storeDays: 3
+    repository: mysql
+
+repository:
+  database:
+    driverClassName: com.mysql.jdbc.Driver
+    url : jdbc:mysql://localhost:3306/hmily?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    maxActive: 20
+    minIdle: 10
+    connectionTimeout: 30000
+    idleTimeout: 600000
+    maxLifetime: 1800000
+  zookeeper:
+    host: localhost:2181
+    sessionTimeOut: 1000000000
+    rootPath: /hmily
+```
+
+> zookeeper是必须要的，所以官网下了个tar包，解压以后本地启动一下。
+
+3、实现接口上添加注解
+
+对@Hmily 标识的接口方法的具体实现上，加上@HmilyTCC(confirmMethod = "confirm", cancelMethod = "cancel")
+- confirmMethod : 确认方法名称，该方法参数列表与返回类型应与标识方法一致。
+- cancelMethod : 回滚方法名称，该方法参数列表与返回类型应与标识方法一致。
+
+TCC模式应该保证 confirm 和 cancel 方法的幂等性，用户需要自行去开发这个2个方法，所有的事务的确认与回滚，完全由用户决定。Hmily框架只是负责来进行调用
+
+
+### 花式掉坑
+1. himlyTCC事务时，在执行confirm的方法时一直提示找不到对应方法。
+   - 原来confirm和cancel方法的参数需要和Try方法一致，看用户手册的时候没有注意到这点！！！所以一定要细心。
 
 
 ### 参考文档
 1. [himly-dubbo用户手册](https://dromara.org/website/zh-cn/docs/hmily/user-dubbo.html)
-
+2. [himly-dubbo-demo源码内](https://github.com/dromara/hmily/tree/master/hmily-demo/hmily-demo-dubbo)
 
 
 

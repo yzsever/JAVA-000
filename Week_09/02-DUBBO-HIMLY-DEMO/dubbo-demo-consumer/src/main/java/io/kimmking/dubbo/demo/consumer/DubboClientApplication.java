@@ -2,9 +2,7 @@ package io.kimmking.dubbo.demo.consumer;
 
 
 import io.kimmking.dubbo.demo.consumer.service.CurrencyTradeService;
-import org.dromara.hmily.spring.annotation.RefererAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
