@@ -12,7 +12,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: 47.100.187.212
+    host: 127.0.0.1
     lettuce:
       pool:
         max-active: 32
