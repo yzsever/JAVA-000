@@ -3,7 +3,7 @@
 2. 在 Java 中实现一个分布式计数器，模拟减库存。
 
 ### 分布式锁
-```
+```java
 @Component
 public class RedisLock {
 
@@ -42,7 +42,7 @@ public class RedisLock {
 
 
 ### 计数器
-```
+```java
 @Component
 public class RedisCounter {
 
