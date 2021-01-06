@@ -1,0 +1,24 @@
+# 基本配置
+## 开放端口
+port ${port}
+## 不作为守护进程
+daemonize no
+## 启用aof持久化模式
+appendonly yes
+
+# 集群配置
+## 开启集群配置
+cluster-enabled yes
+## 存放集群节点的配置文件 系统自动建立
+cluster-config-file nodes-${port}.conf
+## 节点连接超时时间
+cluster-node-timeout 50000  
+## 实际为各节点网卡分配ip
+cluster-announce-ip ${ip}
+## 节点映射端口
+cluster-announce-port ${port}
+## 节点总线端口
+cluster-announce-bus-port 1${port}
+cluster-slave-validity-factor 10
+cluster-migration-barrier 1
+cluster-require-full-coverage yes
