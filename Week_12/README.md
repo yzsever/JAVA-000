@@ -9,5 +9,6 @@
 5. （选做☆☆☆）搭建 hazelcast 3 节点集群，写入 100 万数据到一个 map，模拟和演 示高可用。
 
 
-### 须完成的必做题目
+### 完成的必做题目
 1. （必做）配置 redis 的主从复制，sentinel 高可用，Cluster 集群。
+    - [作业地址](https://github.com/yzsever/JAVA-000/tree/main/Week_12/01-Redis-Env)
