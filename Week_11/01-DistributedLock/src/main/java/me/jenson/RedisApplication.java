@@ -14,13 +14,15 @@ public class RedisApplication {
 	@Autowired
 	public RedisCounterDemo redisCounterDemo;
 
+	@Autowired
+	public RedisLockDemo redisLockDemo;
+
 	public static void main(final String[] args) {
 		SpringApplication.run(RedisApplication.class, args);
 	}
 
 	@PostConstruct
 	public void executeDemo() {
-		RedisLockDemo redisLockDemo = new RedisLockDemo();
 		redisLockDemo.test();
 		redisCounterDemo.test();
 	}

@@ -2,7 +2,6 @@ package me.jenson.lock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.Jedis;
 
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -26,12 +25,12 @@ public class RedisLockDemo {
 
     public void lockAndUnlock() {
         String value = UUID.randomUUID().toString();
-        final boolean islock = redisLock.lock_with_lua(key, value, 1);
-        if (!islock) {
+        final boolean isLock = redisLock.lock_with_lua(key, value);
+        if (!isLock) {
             System.out.println(Thread.currentThread()+":获取锁失败");
         } else {
             System.out.println(Thread.currentThread()+":获取锁成功");
-            redisLock.unlock(jedis, key, value);
+            redisLock.unlock(key, value);
             System.out.println(Thread.currentThread()+":释放锁成功");
         }
     }
