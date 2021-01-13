@@ -9,7 +9,7 @@ import java.util.Optional;
 @Component
 public class KafkaConsumer {
 
-    @KafkaListener(topics = {"test32"}, groupId = "test")
+    @KafkaListener(topics = {"test32"})
     public void consume(ConsumerRecord<?, ?> record) {
         Optional<?> message = Optional.ofNullable(record.value());
         if (message.isPresent()) {

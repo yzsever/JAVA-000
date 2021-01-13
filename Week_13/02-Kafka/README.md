@@ -76,14 +76,14 @@ start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.s
 需要注意的有：
 1. 执行前清理掉zk上的所有数据，可以删除zk的本地文件或者用ZooInspector操作 
 2. KAFKA_BROKER_ID和监听端口需要不同
-3. KAFKA_ADVERTISED_LISTENERS需要使用本地的IPV4地址
+3. KAFKA_ADVERTISED_LISTENERS需要使用本地的IPV4地址(阿里云需要使用外网地址)
 
 ```sh
-docker run -d --name kafka1 -p 9093:9093 -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9093 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -t wurstmeister/kafka
+docker run -d --name kafka1 -p 9093:9093 -e KAFKA_BROKER_ID=1 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9093 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9093 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -e  KAFKA_HEAP_OPTS="-Xms256M -Xmx256M" -t wurstmeister/kafka
 
-docker run -d --name kafka2 -p 9094:9094 -e KAFKA_BROKER_ID=2 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9094 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9094 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -t wurstmeister/kafka
+docker run -d --name kafka2 -p 9094:9094 -e KAFKA_BROKER_ID=2 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9094 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9094 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -e  KAFKA_HEAP_OPTS="-Xms256M -Xmx256M" -t wurstmeister/kafka
 
-docker run -d --name kafka3 -p 9095:9095 -e KAFKA_BROKER_ID=3 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9095 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9095 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -t wurstmeister/kafka
+docker run -d --name kafka3 -p 9095:9095 -e KAFKA_BROKER_ID=3 -e KAFKA_ZOOKEEPER_CONNECT=172.17.0.2:2181 -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://172.19.36.190:9095 -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9095 -e KAFKA_NUM_PARTITIONS=3 -e KAFKA_DEFAULT_REPLICATION_FACTOR=2 -e  KAFKA_HEAP_OPTS="-Xms256M -Xmx256M" -t wurstmeister/kafka
 ```
 
 ### 测试集群功能和性能
@@ -106,13 +106,13 @@ Topic: test32	PartitionCount: 3	ReplicationFactor: 2	Configs:
 
 **生产者**
 ```
-bash-4.4# bin/kafka-console-producer.sh --bootstrap-server 172.17.0.3:9093,172.17.0.4:9094,172.17.0.5:9095 --topic test32
+bash-4.4# bin/kafka-console-producer.sh --bootstrap-server 172.19.36.190:9093,172.19.36.190:9094,172.19.36.190:9095 --topic test32
 > Hello，Kafka cluster. I am Jenson.
 ```
 
 **消费者**
 ```
-bash-4.4# bin/kafka-console-consumer.sh --bootstrap-server 172.17.0.3:9093,172.17.0.4:9094,172.17.0.5:9095 --from-beginning --topic test32
+bash-4.4# bin/kafka-console-consumer.sh --bootstrap-server 172.19.36.190:9093,172.19.36.190:9094,172.19.36.190:9095 --from-beginning --topic test32
 Hello，Kafka cluster. I am Jenson.
 ```
 
@@ -179,5 +179,10 @@ public class KafkaConsumer {
 }
 ```
 
+### 花式踩坑
+1. 使用阿里云内网地址配置KAFKA_ADVERTISED_LISTENERS，发送消息时一直提示: WARN [Producer clientId=console-producer] Error while fetching metadata with correlation id 239 : {test32=LEADER_NOT_AVAILABLE} (org.apache.kafka.clients.NetworkClient)
+
+
 ### 参考文献
 1. [用 Docker 快速搭建 Kafka 集群](https://segmentfault.com/a/1190000022988499)
+2. [在阿里云 ecs 机器上通过 docker 安装 kafka 集群](https://my.oschina.net/kaisesai/blog/4308044)

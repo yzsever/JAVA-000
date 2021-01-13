@@ -23,6 +23,6 @@ public class KafkaProducer {
         message.setMessage(UUID.randomUUID().toString());
         message.setSendTime(new Date());
         System.out.println("KafkaProducer message = " + gson.toJson(message));
-        kafkaTemplate.send("test32", "jenson", gson.toJson(message));
+        kafkaTemplate.send("test32", gson.toJson(message));
     }
 }
