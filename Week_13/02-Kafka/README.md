@@ -116,6 +116,22 @@ bash-4.4# bin/kafka-console-consumer.sh --bootstrap-server 172.19.36.190:9093,17
 Hello，Kafka cluster. I am Jenson.
 ```
 
+#### 2、执行性能测试
+```sh
+bash-4.4# bin/kafka-producer-perf-test.sh --topic test32 --num-records 1000 --record-size 1000 --throughput 1000 --producer-props bootstrap.servers=172.19.36.190:9093,172.19.36.190:9094,172.19.36.190:9095
+337 records sent, 66.8 records/sec (0.06 MB/sec), 1627.0 ms avg latency, 4218.0 ms max latency.
+416 records sent, 74.2 records/sec (0.07 MB/sec), 6455.2 ms avg latency, 9756.0 ms max latency.
+1000 records sent, 69.930070 records/sec (0.07 MB/sec), 6128.17 ms avg latency, 13304.00 ms max latency, 5931 ms 50th, 12862 ms 95th, 13296 ms 99th, 13304 ms 99.9th.
+
+
+bash-4.4# bin/kafka-consumer-perf-test.sh --bootstrap-server 172.19.36.190:9093,172.19.36.190:9094,172.19.36.190:9095 --topic test32 --fetch-size 1048576 --messages 10000 --threads 1
+start.time, end.time, data.consumed.in.MB, MB.sec, data.consumed.in.nMsg, nMsg.sec, rebalance.time.ms, fetch.time.ms, fetch.MB.sec, fetch.nMsg.sec
+2021-01-13 11:55:59:417, 2021-01-13 11:56:09:617, 0.0000, 0.0000, 0, 0.0000, 1610538960342, -1610538950142, -0.0000, -0.0000
+```
+
+集群的性能比单节点的Kafka慢了10倍，主要考虑集群需要走外部网络？
+
+
 ### 四、Spring Kafka操作
 
 #### 1、添加Kafka依赖
