@@ -1,13 +1,13 @@
-package io.kimmking.kmq;
+package me.jenson.yzsmq;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KmqApplication {
+public class YZSmqApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KmqApplication.class, args);
+        SpringApplication.run(YZSmqApplication.class, args);
     }
 
 }

@@ -1,4 +1,4 @@
-package io.kimmking.kmq.demo;
+package me.jenson.yzsmq.demo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
