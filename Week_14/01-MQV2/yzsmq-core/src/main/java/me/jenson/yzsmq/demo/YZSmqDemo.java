@@ -22,9 +22,10 @@ public class YZSmqDemo {
         flag[0] = true;
         new Thread(() -> {
             while (flag[0]) {
-                YZSmqMessage<Order> message = consumer.poll(100);
+                YZSmqMessage<Order> message = consumer.poll(consumer.getUuid());
                 if(null != message) {
                     System.out.println(message.getBody());
+                    consumer.ackPoll(consumer.getUuid());
                 }
             }
             System.out.println("程序退出。");

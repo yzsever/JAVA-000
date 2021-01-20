@@ -1,13 +1,21 @@
 package me.jenson.yzsmq.core;
 
+import lombok.Data;
+
+import java.util.UUID;
+
+@Data
 public class YZSmqConsumer<T> {
 
     private final YZSmqBroker broker;
 
     private YZSmq YZSmq;
 
+    private String uuid;
+
     public YZSmqConsumer(YZSmqBroker broker) {
         this.broker = broker;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public void subscribe(String topic) {
@@ -15,8 +23,16 @@ public class YZSmqConsumer<T> {
         if (null == YZSmq) throw new RuntimeException("Topic[" + topic + "] doesn't exist.");
     }
 
-    public YZSmqMessage<T> poll(long timeout) {
-        return YZSmq.poll(timeout);
+    public YZSmqMessage<T> poll(String uuid) {
+        return YZSmq.poll(uuid);
+    }
+
+    public void poll(long timeout) {
+        YZSmq.poll(timeout);
+    }
+
+    public void ackPoll(String uuid){
+        YZSmq.ackPoll(uuid);
     }
 
 }
