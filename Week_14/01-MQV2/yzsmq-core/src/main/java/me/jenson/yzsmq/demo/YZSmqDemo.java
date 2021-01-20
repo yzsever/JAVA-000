@@ -35,6 +35,7 @@ public class YZSmqDemo {
         for (int i = 0; i < 1000; i++) {
             Order order = new Order(1000L + i, System.currentTimeMillis(), "USD2CNY", 6.51d);
             producer.send(topic, new YZSmqMessage(null, order));
+            producer.sendAck(topic);
         }
         Thread.sleep(500);
         System.out.println("点击任何键，发送一条消息；点击q或e，退出程序。");
@@ -43,6 +44,7 @@ public class YZSmqDemo {
             if(c > 20) {
                 System.out.println(c);
                 producer.send(topic, new YZSmqMessage(null, new Order(100000L + c, System.currentTimeMillis(), "USD2CNY", 6.52d)));
+                producer.sendAck(topic);
             }
 
             if( c == 'q' || c == 'e') break;
